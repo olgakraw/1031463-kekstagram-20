@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Ольга Кравчук](https://up.htmlacademy.ru/javascript/20/user/1031463).
-* Наставник: Кирилл Коновалов.
+* Наставник: Кирилл Коновалов
 
 ---
 
