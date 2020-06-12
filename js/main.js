@@ -18,8 +18,6 @@ var posts = [];
 var usersComments = [];
 
 var getRandomNumber = function (min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
@@ -43,5 +41,24 @@ var createPost = function () {
       comments: usersComments[i]
     };
     posts.push(post);
+  }
+  //var usersPictures = document.querySelector('.pictures');
+  var template = document.querySelector('#picture').content.querySelector('a');
+    var element = template.cloneNode(true);
+    element.child[0].src = post.url;
+    element.child[1].child[0].textContent = post.comments;
+    element.child[1].child[1].textContent = post.likes;
+
+    //usersPictures.appendChild(element);
+    // element.querySelector('.picture__img').src = post.url;
+    // element.querySelector('.picture__likes').textContent = post.likes;
+    // element.querySelector('.picture__comments').textContent = post.comments;
+    var usersPictures = document.querySelector('.pictures');
+    var fragment = document.createDocumentFragment();
+
+    for (var i = 0; i < POSTS_NUMBER; i++) {
+      fragment.appendChild(element[i]);
+    }
+    usersPictures.appendChild(fragment);
   }
 };
