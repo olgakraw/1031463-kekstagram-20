@@ -49,9 +49,9 @@ createPost(POSTS_NUMBER);
 var createNewPost = function (items) {
   var template = document.querySelector('#picture').content.querySelector('a');
   var element = template.cloneNode(true);
-  element.children[0].src = items.url;
-  element.children[1].children[0].textContent = '1';
-  element.children[1].children[1].textContent = items.likes;
+  element.querySelector('.picture__img').src = items.url;
+  element.querySelector('.picture__comments').textContent = 1;
+  element.querySelector('.picture__likes').textContent = items.likes;
 
   return element;
 
@@ -61,85 +61,10 @@ var renderPosts = function (newPosts) {
   var fragment = document.createDocumentFragment();
   var postList = document.querySelector('.pictures');
 
-  for (var j = 0; j < newPosts.length; j++) {
-    fragment.appendChild(createNewPost(newPosts[j]));
+  newPosts.forEach(function (item) {
+    fragment.appendChild(createNewPost(item));
     postList.appendChild(fragment);
-  }
+  });
 };
 
 renderPosts(posts);
-
-// var makeElement = function (tagName, className, text) {
-//   var element = document.createElement(tagName);
-//   element.classList.add(className);
-//   if (text) {
-//     element.textContent = text;
-//   }
-//   return element;
-// };
-
-// var createNewPost = function (newPost) {
-//   var newPostItem = makeElement('a', 'picture');
-
-//   var picture = makeElement('img', 'picture__img');
-//   picture.src = newPost.url;
-//   picture.alt = 'Случайная фотография';
-//   newPostItem.appendChild(picture);
-
-//   var info = makeElement('p', 'picture__info', newPost.description);
-//   newPostItem.appendChild(info);
-
-//   var comments = makeElement('span', 'picture__comments', '1');
-//   info.appendChild(comments);
-
-//   var likes = makeElement('span', 'picture__likes', newPost.likes);
-//   info.appendChild(likes);
-
-//   return newPostItem;
-
-// };
-
-// var renderPosts = function (newPosts) {
-//   var postList = document.querySelector('.pictures');
-
-//   for (var i = 0; i < newPosts.length; i++) {
-
-//     var postItem = createNewPost(newPosts[i]);
-//     postList.appendChild(postItem);
-
-//   }
-// };
-
-// renderPosts(posts);
-
-// var postList = document.querySelector('.pictures');
-
-
-//     for (var i = 0; i < POSTS_NUMBER; i++) {
-//       fragment.appendChild(element[i]);
-//     }
-//     usersPictures.appendChild(fragment);
-//   }
-// };
-
-
-//   //var usersPictures = document.querySelector('.pictures');
-//   var template = document.querySelector('#picture').content.querySelector('a');
-//     var element = template.cloneNode(true);
-//     element.child[0].src = post.url;
-//     element.child[1].child[0].textContent = post.comments;
-//     element.child[1].child[1].textContent = post.likes;
-
-//     //usersPictures.appendChild(element);
-//     // element.querySelector('.picture__img').src = post.url;
-//     // element.querySelector('.picture__likes').textContent = post.likes;
-//     // element.querySelector('.picture__comments').textContent = post.comments;
-//     var usersPictures = document.querySelector('.pictures');
-//     var fragment = document.createDocumentFragment();
-
-//     for (var i = 0; i < POSTS_NUMBER; i++) {
-//       fragment.appendChild(element[i]);
-//     }
-//     usersPictures.appendChild(fragment);
-//   }
-// };
