@@ -68,3 +68,133 @@ var renderPosts = function (newPosts) {
 };
 
 renderPosts(posts);
+
+var uploadFile = document.querySelector('#upload-file');
+var uploadOverlay = document.querySelector('.img-upload__overlay');
+var uploadCancel = document.querySelector('.img-upload__cancel');
+var body = document.querySelector('body');
+
+var onPopupEscPress = function (evt) {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    closePopup();
+  }
+};
+
+var openPopup = function () {
+  uploadOverlay.classList.remove('hidden');
+  body.classList.add('modal-open');
+
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var closePopup = function () {
+  uploadOverlay.classList.add('hidden');
+  body.classList.remove('modal-open');
+
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+uploadFile.addEventListener('change', function () {
+  openPopup();
+});
+
+uploadCancel.addEventListener('click', function () {
+  closePopup();
+});
+
+// var effectPin = document.querySelector('.effect-level__pin');
+var effectLevelLine = document.querySelector('.effect-level__line');
+var effectValue = document.querySelector('.effect-level__value');
+var imagePreview = document.querySelector('.img-upload__preview');
+var imageUploadEffects = document.querySelector('.img-upload__effects');
+var LINE_WIDTH = 453;
+
+var EFFECTS = ['none', 'chrome', 'sepia', 'marvin', 'phobos', 'heat'];
+
+var filterChangeHandler = function (evt) {
+  EFFECTS.forEach(function (item) {
+    if (imagePreview.classList.contains('effects__preview--' + item)) {
+      imagePreview.classList.remove('effects__preview--' + item);
+    }
+
+  });
+  imagePreview.classList.add('effects__preview--' + evt.target.value);
+  if (imagePreview.classList.contains('effects__preview--none')) {
+    document.querySelector('.img-upload__effect-level').classList.add('hidden');
+  } else {
+    document.querySelector('.img-upload__effect-level').classList.remove('hidden');
+  }
+};
+
+imageUploadEffects.addEventListener('change', filterChangeHandler);
+
+
+effectLevelLine.addEventListener('mouseup', function (evt) {
+  effectValue.value = (evt.offsetX / LINE_WIDTH) * 100;
+  if (imagePreview.classList.contains('effects__preview--chrome')) {
+    imagePreview.style.filter = 'grayscale(' + effectValue.value / 100 + ')';
+  }
+  if (imagePreview.classList.contains('effects__preview--sepia')) {
+    imagePreview.style.filter = 'sepia(' + effectValue.value / 100 + ')';
+  }
+  if (imagePreview.classList.contains('effects__preview--marvin')) {
+    imagePreview.style.filter = 'invert(' + effectValue.value + '%)';
+  }
+  if (imagePreview.classList.contains('effects__preview--phobos')) {
+    imagePreview.style.filter = 'blur(' + effectValue.value / 100 * 3 + 'px)';
+  }
+  if (imagePreview.classList.contains('effects__preview--heat')) {
+    imagePreview.style.filter = 'brightness(' + effectValue.value / 100 * 3 + ')';
+  }
+});
+
+var scaleSmaller = document.querySelector('.scale__control--smaller');
+var scaleBigger = document.querySelector('.scale__control--bigger');
+var scaleValue = document.querySelector('.scale__control--value');
+
+var maxValue = 100;
+var minValue = 25;
+var value = 100;
+
+var makeSmaller = function () {
+  scaleValue.value = value - 25 + '%';
+  value -= 25;
+  if (value <= minValue) {
+    scaleValue.value = minValue + '%';
+    value = minValue;
+  }
+  imagePreview.style.transform = 'scale(' + value / 100 + ')';
+};
+
+var makeBigger = function () {
+  scaleValue.value = value + 25 + '%';
+  value += 25;
+  if (value >= maxValue) {
+    scaleValue.value = maxValue + '%';
+    value = maxValue;
+  }
+  imagePreview.style.transform = 'scale(' + value / 100 + ')';
+};
+
+scaleSmaller.addEventListener('click', function () {
+  makeSmaller();
+});
+
+scaleBigger.addEventListener('click', function () {
+  makeBigger();
+});
+
+var hashtagInput = document.querySelector('.text__hashtags');
+var re = /^#[a-zA-Zа-яА-я0-9]*$/;
+
+hashtagInput.addEventListener('input', function () {
+  var hashtagSplit = hashtagInput.value.split(' ');
+  hashtagSplit.forEach(function (item) {
+    if (!re.test(item)) {
+      hashtagInput.setCustomValidity('Неправильный формат хэштега');
+    } else {
+      hashtagInput.setCustomValidity('');
+    }
+  });
+});
