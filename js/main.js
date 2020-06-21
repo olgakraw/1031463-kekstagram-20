@@ -209,26 +209,15 @@ var re = /^#[a-zA-Zа-яА-я0-9]*$/;
 
 hashtagInput.addEventListener('input', function () {
   var hashtagSplit = hashtagInput.value.split(' ');
-  console.log(hashtagSplit);
 
   var isHashtagValid = hashtagSplit.some(function (element) {
     return !re.test(element);
   });
-  console.log(isHashtagValid);
 
-  // var isHashtagValid = hashtagSplit.some(re.test(element));
-  // console.log(isHashtagValid);
-
-  // hashtagSplit.forEach(function () {
   if (isHashtagValid === true) {
 
     hashtagInput.setCustomValidity('Неправильный формат хэштега');
-  // } else {
-
-  //   hashtagInput.setCustomValidity('');
   }
-  // });
-
 
   hashtagSplit.forEach(function () {
     if (hashtagSplit.length > 5) {
