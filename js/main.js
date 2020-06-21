@@ -113,21 +113,40 @@ var LINE_WIDTH = 453;
 var EFFECTS = ['none', 'chrome', 'sepia', 'marvin', 'phobos', 'heat'];
 
 var filterChangeHandler = function (evt) {
+
   EFFECTS.forEach(function (item) {
     if (imagePreview.classList.contains('effects__preview--' + item)) {
       imagePreview.classList.remove('effects__preview--' + item);
     }
-
   });
+
   imagePreview.classList.add('effects__preview--' + evt.target.value);
+  if (imagePreview.classList.contains('effects__preview--chrome')) {
+    imagePreview.style.filter = 'grayscale(1)';
+  }
+  if (imagePreview.classList.contains('effects__preview--sepia')) {
+    imagePreview.style.filter = 'sepia(1)';
+  }
+  if (imagePreview.classList.contains('effects__preview--marvin')) {
+    imagePreview.style.filter = 'invert(100%)';
+  }
+  if (imagePreview.classList.contains('effects__preview--phobos')) {
+    imagePreview.style.filter = 'blur(3px)';
+  }
+  if (imagePreview.classList.contains('effects__preview--heat')) {
+    imagePreview.style.filter = 'brightness(3)';
+  }
   if (imagePreview.classList.contains('effects__preview--none')) {
     document.querySelector('.img-upload__effect-level').classList.add('hidden');
   } else {
     document.querySelector('.img-upload__effect-level').classList.remove('hidden');
   }
+
 };
 
-imageUploadEffects.addEventListener('change', filterChangeHandler);
+imageUploadEffects.addEventListener('change', function (evt) {
+  filterChangeHandler(evt);
+});
 
 
 effectLevelLine.addEventListener('mouseup', function (evt) {
@@ -149,8 +168,8 @@ effectLevelLine.addEventListener('mouseup', function (evt) {
   }
 });
 
-var scaleSmaller = document.querySelector('.scale__control--smaller');
-var scaleBigger = document.querySelector('.scale__control--bigger');
+var scaleDown = document.querySelector('.scale__control--smaller');
+var scaleUp = document.querySelector('.scale__control--bigger');
 var scaleValue = document.querySelector('.scale__control--value');
 
 var maxValue = 100;
@@ -177,11 +196,11 @@ var makeBigger = function () {
   imagePreview.style.transform = 'scale(' + value / 100 + ')';
 };
 
-scaleSmaller.addEventListener('click', function () {
+scaleDown.addEventListener('click', function () {
   makeSmaller();
 });
 
-scaleBigger.addEventListener('click', function () {
+scaleUp.addEventListener('click', function () {
   makeBigger();
 });
 
@@ -190,9 +209,30 @@ var re = /^#[a-zA-Zа-яА-я0-9]*$/;
 
 hashtagInput.addEventListener('input', function () {
   var hashtagSplit = hashtagInput.value.split(' ');
-  hashtagSplit.forEach(function (item) {
-    if (!re.test(item)) {
-      hashtagInput.setCustomValidity('Неправильный формат хэштега');
+  console.log(hashtagSplit);
+
+  var isHashtagValid = hashtagSplit.some(function (element) {
+    return !re.test(element);
+  });
+  console.log(isHashtagValid);
+
+  // var isHashtagValid = hashtagSplit.some(re.test(element));
+  // console.log(isHashtagValid);
+
+  // hashtagSplit.forEach(function () {
+  if (isHashtagValid === true) {
+
+    hashtagInput.setCustomValidity('Неправильный формат хэштега');
+  // } else {
+
+  //   hashtagInput.setCustomValidity('');
+  }
+  // });
+
+
+  hashtagSplit.forEach(function () {
+    if (hashtagSplit.length > 5) {
+      hashtagInput.setCustomValidity('Не больше пяти хэштегов!');
     } else {
       hashtagInput.setCustomValidity('');
     }
