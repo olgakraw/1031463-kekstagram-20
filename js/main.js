@@ -137,6 +137,7 @@ var filterChangeHandler = function (evt) {
     imagePreview.style.filter = 'brightness(3)';
   }
   if (imagePreview.classList.contains('effects__preview--none')) {
+    imagePreview.style.filter = 'none';
     document.querySelector('.img-upload__effect-level').classList.add('hidden');
   } else {
     document.querySelector('.img-upload__effect-level').classList.remove('hidden');
@@ -210,20 +211,17 @@ var re = /^#[a-zA-Zа-яА-я0-9]*$/;
 hashtagInput.addEventListener('input', function () {
   var hashtagSplit = hashtagInput.value.split(' ');
 
-  var isHashtagValid = hashtagSplit.some(function (element) {
+  hashtagInput.setCustomValidity('');
+
+  var isHashtagInvalid = hashtagSplit.some(function (element) {
     return !re.test(element);
   });
 
-  if (isHashtagValid === true) {
-
+  if (isHashtagInvalid === true) {
     hashtagInput.setCustomValidity('Неправильный формат хэштега');
   }
 
-  hashtagSplit.forEach(function () {
-    if (hashtagSplit.length > 5) {
-      hashtagInput.setCustomValidity('Не больше пяти хэштегов!');
-    } else {
-      hashtagInput.setCustomValidity('');
-    }
-  });
+  if (hashtagSplit.length > 5) {
+    hashtagInput.setCustomValidity('Не больше пяти хэштегов!');
+  }
 });
