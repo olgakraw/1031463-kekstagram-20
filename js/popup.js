@@ -132,9 +132,9 @@
     document.querySelector('.img-upload__effect-level').classList.add('hidden');
     imagePreview.style.transform = 'scale(1)';
   };
+
   form.addEventListener('submit', function (evt) {
     window.upload(new FormData(form), successHandler, errorHandler);
     evt.preventDefault();
-
   });
 })();
