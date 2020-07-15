@@ -3,23 +3,61 @@
 (function () {
 
   var hashtagInput = document.querySelector('.text__hashtags');
+  var commentInput = document.querySelector('.text__description');
   var re = /^#[a-zA-Zа-яА-я0-9]*$/;
 
+  var isBiggerThanOne = function (value) {
+    return value > 1;
+  };
+
   hashtagInput.addEventListener('input', function () {
-    var hashtagSplit = hashtagInput.value.split(' ');
+    var hashtags = hashtagInput.value.split(' ');
 
     hashtagInput.setCustomValidity('');
 
-    var isHashtagInvalid = hashtagSplit.some(function (element) {
+    var isHashtagInvalid = hashtags.some(function (element) {
       return !re.test(element);
     });
 
     if (isHashtagInvalid === true) {
-      hashtagInput.setCustomValidity('Неправильный формат хэштега');
+      hashtagInput.setCustomValidity('Неправильный формат хэштега!');
     }
 
-    if (hashtagSplit.length > 5) {
+    if (hashtags.length > 5) {
       hashtagInput.setCustomValidity('Не больше пяти хэштегов!');
     }
+
+    var hashtagsCount = {};
+
+    hashtags.forEach(function (hashtag) {
+      hashtag = hashtag.toLowerCase();
+      if (!hashtagsCount[hashtag]) {
+        hashtagsCount[hashtag] = 0;
+      }
+      hashtagsCount[hashtag]++;
+
+      var hashtagsNumbers = Object.values(hashtagsCount);
+      var repeatedHashatagsNumbers = hashtagsNumbers.filter(isBiggerThanOne);
+
+      if (repeatedHashatagsNumbers.length > 0) {
+        hashtagInput.setCustomValidity('Хэштеги не должны повторяться!');
+      }
+
+    });
+
+  });
+
+  hashtagInput.addEventListener('focus', function () {
+    document.removeEventListener('keydown', window.onPopupEscPress);
+  });
+  hashtagInput.addEventListener('blur', function () {
+    document.addEventListener('keydown', window.onPopupEscPress);
+  });
+
+  commentInput.addEventListener('focus', function () {
+    document.removeEventListener('keydown', window.onPopupEscPress);
+  });
+  commentInput.addEventListener('blur', function () {
+    document.addEventListener('keydown', window.onPopupEscPress);
   });
 })();
