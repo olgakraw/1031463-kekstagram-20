@@ -6,12 +6,16 @@
   var commentInput = document.querySelector('.text__description');
   var re = /^#[a-zA-Zа-яА-я0-9]*$/;
 
+  var doesHashtagRepeat = function (value) {
+    return value > 1;
+  };
+
   hashtagInput.addEventListener('input', function () {
-    var hashtagSplit = hashtagInput.value.split(' ');
+    var hashtags = hashtagInput.value.split(' ');
 
     hashtagInput.setCustomValidity('');
 
-    var isHashtagInvalid = hashtagSplit.some(function (element) {
+    var isHashtagInvalid = hashtags.some(function (element) {
       return !re.test(element);
     });
 
@@ -19,19 +23,28 @@
       hashtagInput.setCustomValidity('Неправильный формат хэштега!');
     }
 
-    if (hashtagSplit.length > 5) {
+    if (hashtags.length > 5) {
       hashtagInput.setCustomValidity('Не больше пяти хэштегов!');
     }
 
-    for (var i = 0; i < hashtagSplit.length; i++) {
-      for (var j = i + 1; j < hashtagSplit.length; j++) {
-        hashtagSplit[i] = hashtagSplit[i].toLowerCase();
-        hashtagSplit[j] = hashtagSplit[j].toLowerCase();
-        if (hashtagSplit[i] === hashtagSplit[j]) {
-          hashtagInput.setCustomValidity('Хэштеги не должны повторяться!');
-        }
+    var obj = {};
+
+    hashtags.forEach(function (item) {
+      item = item.toLowerCase();
+      if (!obj[item]) {
+        obj[item] = 0;
       }
-    }
+      obj[item]++;
+
+      var valuesArray = Object.values(obj);
+      var valuesNewArray = valuesArray.filter(doesHashtagRepeat);
+
+      if (valuesNewArray.length > 0) {
+        hashtagInput.setCustomValidity('Хэштеги не должны повторяться!');
+      }
+
+    });
+
   });
 
   hashtagInput.addEventListener('focus', function () {
