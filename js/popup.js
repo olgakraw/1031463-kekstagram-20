@@ -67,8 +67,25 @@
 
     var successMessagePopup = main.querySelector('.success');
 
+    var onSuccessMessageEscPress = function (evt) {
+      if (evt.key === 'Escape') {
+        evt.preventDefault();
+        closeMessage(successMessagePopup);
+      }
+    };
+
+    document.addEventListener('keydown', onSuccessMessageEscPress);
+
     successButton.addEventListener('click', function () {
       closeMessage(successMessagePopup);
+      document.removeEventListener('keydown', onSuccessMessageEscPress);
+    });
+
+    document.addEventListener('click', function (evt) {
+      if (!evt.target.classList.contains('success__inner') && !evt.target.classList.contains('success__title')) {
+        closeMessage(successMessagePopup);
+      }
+
     });
 
     form.reset();
@@ -88,9 +105,33 @@
 
     var errorMessagePopup = main.querySelector('.error');
 
+    var onErrorMessageEscPress = function (evt) {
+      if (evt.key === 'Escape') {
+        evt.preventDefault();
+        closeMessage(errorMessagePopup);
+      }
+    };
+
+    document.addEventListener('keydown', onErrorMessageEscPress);
+
     errorButton.addEventListener('click', function () {
       closeMessage(errorMessagePopup);
+      document.removeEventListener('keydown', onErrorMessageEscPress);
     });
+
+    document.addEventListener('click', function (evt) {
+      if (!evt.target.classList.contains('error__inner') && !evt.target.classList.contains('error__title')) {
+        closeMessage(errorMessagePopup);
+      }
+    });
+
+    form.reset();
+    var imagePreview = document.querySelector('.img-upload__preview');
+
+    imagePreview.style.filter = 'none';
+    document.querySelector('.img-upload__effect-level').classList.add('hidden');
+    imagePreview.style.transform = 'scale(1)';
+
   };
   form.addEventListener('submit', function (evt) {
     window.upload(new FormData(form), successHandler, errorHandler);
