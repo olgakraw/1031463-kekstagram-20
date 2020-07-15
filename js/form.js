@@ -6,7 +6,7 @@
   var commentInput = document.querySelector('.text__description');
   var re = /^#[a-zA-Zа-яА-я0-9]*$/;
 
-  var doesHashtagRepeat = function (value) {
+  var isBiggerThanOne = function (value) {
     return value > 1;
   };
 
@@ -27,19 +27,19 @@
       hashtagInput.setCustomValidity('Не больше пяти хэштегов!');
     }
 
-    var obj = {};
+    var hashtagsCount = {};
 
-    hashtags.forEach(function (item) {
-      item = item.toLowerCase();
-      if (!obj[item]) {
-        obj[item] = 0;
+    hashtags.forEach(function (hashtag) {
+      hashtag = hashtag.toLowerCase();
+      if (!hashtagsCount[hashtag]) {
+        hashtagsCount[hashtag] = 0;
       }
-      obj[item]++;
+      hashtagsCount[hashtag]++;
 
-      var valuesArray = Object.values(obj);
-      var valuesNewArray = valuesArray.filter(doesHashtagRepeat);
+      var hashtagsNumbers = Object.values(hashtagsCount);
+      var repeatedHashatagsNumbers = hashtagsNumbers.filter(isBiggerThanOne);
 
-      if (valuesNewArray.length > 0) {
+      if (repeatedHashatagsNumbers.length > 0) {
         hashtagInput.setCustomValidity('Хэштеги не должны повторяться!');
       }
 

@@ -20,12 +20,12 @@
       postList.appendChild(fragment);
     });
 
-    window.postsArray = Array.from(newPosts);
+    window.posts = Array.from(newPosts);
 
 
     var newPictures = postList.querySelectorAll('.picture');
 
-    window.createBigPicture(newPictures, window.postsArray);
+    window.createBigPicture(newPictures, window.posts);
 
   }, function () {});
 

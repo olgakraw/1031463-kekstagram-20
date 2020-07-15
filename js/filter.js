@@ -6,7 +6,7 @@
 
   window.updateArrayDiscussed = function (array) {
 
-    window.filterDiscussedArray = array.sort(function (post1, post2) {
+    window.filterDiscussedPosts = array.sort(function (post1, post2) {
       if (post1.comments.length < post2.comments.length) {
         return 1;
       }
@@ -19,10 +19,10 @@
 
   window.updateArrayRandom = function (array) {
 
-    window.filterRandomArray = [];
+    window.filterRandomPosts = [];
     for (var i = 0; i < 10; i++) {
       var index = Math.floor(Math.random() * array.length);
-      window.filterRandomArray.push(array[index]);
+      window.filterRandomPosts.push(array[index]);
       array.splice(index, 1);
     }
   };
@@ -61,10 +61,10 @@
 
     window.debounce(function () {
       removePosts();
-      window.updateArrayDiscussed(window.postsArray.slice(0));
-      // window.createBigPicture(window.postsArray);
-      renderPosts(window.filterDiscussedArray);
-      window.createBigPicture(postList.querySelectorAll('.picture'), window.filterDiscussedArray);
+      window.updateArrayDiscussed(window.posts.slice(0));
+
+      renderPosts(window.filterDiscussedPosts);
+      window.createBigPicture(postList.querySelectorAll('.picture'), window.filterDiscussedPosts);
 
     })();
   });
@@ -78,9 +78,9 @@
 
     window.debounce(function () {
       removePosts();
-      window.updateArrayRandom(window.postsArray.slice(0));
-      renderPosts(window.filterRandomArray);
-      window.createBigPicture(document.querySelectorAll('.picture'), window.filterRandomArray);
+      window.updateArrayRandom(window.posts.slice(0));
+      renderPosts(window.filterRandomPosts);
+      window.createBigPicture(document.querySelectorAll('.picture'), window.filterRandomPosts);
     })();
   });
 
@@ -92,8 +92,8 @@
 
     window.debounce(function () {
       removePosts();
-      renderPosts(window.postsArray);
-      window.createBigPicture(postList.querySelectorAll('.picture'), window.postsArray);
+      renderPosts(window.posts);
+      window.createBigPicture(postList.querySelectorAll('.picture'), window.posts);
     })();
   });
 })();
