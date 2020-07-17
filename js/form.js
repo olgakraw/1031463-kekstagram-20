@@ -30,6 +30,18 @@
     var hashtagsCount = {};
 
     hashtags.forEach(function (hashtag) {
+      if (hashtag === '#') {
+        hashtagInput.setCustomValidity('Хэштег не может состоять только из #!');
+      }
+
+      if (hashtag.length > 20) {
+        hashtagInput.setCustomValidity('Максимальная длина хэштега - 20 символов!');
+      }
+
+      if (hashtag === '') {
+        hashtagInput.setCustomValidity('');
+      }
+
       hashtag = hashtag.toLowerCase();
       if (!hashtagsCount[hashtag]) {
         hashtagsCount[hashtag] = 0;

@@ -5,11 +5,20 @@
   var uploadOverlay = document.querySelector('.img-upload__overlay');
   var uploadCancel = document.querySelector('.img-upload__cancel');
   var body = document.querySelector('body');
+  var imagePreview = document.querySelector('.img-upload__preview');
+  var hashtagInput = document.querySelector('.text__hashtags');
 
   window.onPopupEscPress = function (evt) {
     if (evt.key === 'Escape') {
       evt.preventDefault();
       closePopup();
+
+      form.reset();
+
+      hashtagInput.setCustomValidity('');
+      imagePreview.style.filter = 'none';
+      document.querySelector('.img-upload__effect-level').classList.add('hidden');
+      imagePreview.style.transform = 'scale(1)';
     }
   };
 
@@ -33,11 +42,17 @@
 
   uploadCancel.addEventListener('click', function () {
     closePopup();
+
+    form.reset();
+
+    hashtagInput.setCustomValidity('');
+    imagePreview.style.filter = 'none';
+    document.querySelector('.img-upload__effect-level').classList.add('hidden');
+    imagePreview.style.transform = 'scale(1)';
   });
 
   var form = document.querySelector('.img-upload__form');
-  var main = document.querySelector('main');
-
+  var main = body.querySelector('main');
 
   var createSuccessMessage = function () {
     var template = document.querySelector('#success').content.querySelector('section');
@@ -45,27 +60,31 @@
     return successMessage;
   };
 
+  main.appendChild(createSuccessMessage());
+  var successMessagePopup = main.querySelector('.success');
+  successMessagePopup.classList.add('hidden');
+
   var createErrorMessage = function () {
     var template = document.querySelector('#error').content.querySelector('section');
     var errorMessage = template.cloneNode(true);
     return errorMessage;
   };
 
+  main.appendChild(createErrorMessage());
+  var errorMessagePopup = main.querySelector('.error');
+  errorMessagePopup.classList.add('hidden');
+
   var closeMessage = function (message) {
     message.classList.add('hidden');
   };
 
-  var fragment = document.createDocumentFragment();
-
   var successHandler = function () {
-    uploadOverlay.classList.add('hidden');
 
-    fragment.appendChild(createSuccessMessage());
-    main.appendChild(fragment);
+    uploadOverlay.classList.add('hidden');
+    var successMessagePopupDocument = document.body.querySelector('.success');
+    successMessagePopupDocument.classList.remove('hidden');
 
     var successButton = main.querySelector('.success__button');
-
-    var successMessagePopup = main.querySelector('.success');
 
     var onSuccessMessageEscPress = function (evt) {
       if (evt.key === 'Escape') {
@@ -79,6 +98,7 @@
     successButton.addEventListener('click', function () {
       closeMessage(successMessagePopup);
       document.removeEventListener('keydown', onSuccessMessageEscPress);
+
     });
 
     document.addEventListener('click', function (evt) {
@@ -89,21 +109,19 @@
     });
 
     form.reset();
-    var imagePreview = document.querySelector('.img-upload__preview');
 
     imagePreview.style.filter = 'none';
     document.querySelector('.img-upload__effect-level').classList.add('hidden');
     imagePreview.style.transform = 'scale(1)';
+
   };
 
   var errorHandler = function () {
     uploadOverlay.classList.add('hidden');
-    fragment.appendChild(createErrorMessage());
-    main.appendChild(fragment);
+    var errorMessagePopupDocument = document.body.querySelector('.error');
+    errorMessagePopupDocument.classList.remove('hidden');
 
-    var errorButton = main.querySelector('.error__button');
-
-    var errorMessagePopup = main.querySelector('.error');
+    var errorButton = document.body.querySelector('.error__button');
 
     var onErrorMessageEscPress = function (evt) {
       if (evt.key === 'Escape') {
@@ -126,7 +144,6 @@
     });
 
     form.reset();
-    var imagePreview = document.querySelector('.img-upload__preview');
 
     imagePreview.style.filter = 'none';
     document.querySelector('.img-upload__effect-level').classList.add('hidden');
@@ -134,7 +151,10 @@
   };
 
   form.addEventListener('submit', function (evt) {
+
     window.upload(new FormData(form), successHandler, errorHandler);
     evt.preventDefault();
+
   });
+
 })();

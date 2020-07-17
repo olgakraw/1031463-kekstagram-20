@@ -1,14 +1,18 @@
 'use strict';
 
 (function () {
+  var LINE_WIDTH = 453;
+  var MAX_SCALE_VALUE = 100;
+  var MIN_SCALE_VALUE = 25;
+  var SCALE_STEP = 25;
+
+  var EFFECTS = ['none', 'chrome', 'sepia', 'marvin', 'phobos', 'heat'];
+
   var effectDepth = document.querySelector('.effect-level__depth');
   var effectPin = document.querySelector('.effect-level__pin');
   var effectValue = document.querySelector('.effect-level__value');
   var imagePreview = document.querySelector('.img-upload__preview');
   var imageUploadEffects = document.querySelector('.img-upload__effects');
-  var LINE_WIDTH = 453;
-
-  var EFFECTS = ['none', 'chrome', 'sepia', 'marvin', 'phobos', 'heat'];
 
   var filterChangeHandler = function (evt) {
 
@@ -138,13 +142,11 @@
   var scaleUp = document.querySelector('.scale__control--bigger');
   var scaleValue = document.querySelector('.scale__control--value');
 
-  var MAX_SCALE_VALUE = 100;
-  var MIN_SCALE_VALUE = 25;
   var value = 100;
 
   var makeSmaller = function () {
-    scaleValue.value = value - 25 + '%';
-    value -= 25;
+    scaleValue.value = value - SCALE_STEP + '%';
+    value -= SCALE_STEP;
     if (value <= MIN_SCALE_VALUE) {
       scaleValue.value = MIN_SCALE_VALUE + '%';
       value = MIN_SCALE_VALUE;
@@ -153,8 +155,8 @@
   };
 
   var makeBigger = function () {
-    scaleValue.value = value + 25 + '%';
-    value += 25;
+    scaleValue.value = value + SCALE_STEP + '%';
+    value += SCALE_STEP;
     if (value >= MAX_SCALE_VALUE) {
       scaleValue.value = MAX_SCALE_VALUE + '%';
       value = MAX_SCALE_VALUE;

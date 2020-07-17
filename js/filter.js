@@ -52,48 +52,42 @@
   var discussedFilter = document.querySelector('#filter-discussed');
   var randomFilter = document.querySelector('#filter-random');
 
-  discussedFilter.addEventListener('click', function () {
-
+  var discussedFilterHandler = window.debounce(function () {
     defaultFilter.classList.remove('img-filters__button--active');
     randomFilter.classList.remove('img-filters__button--active');
     discussedFilter.classList.add('img-filters__button--active');
 
-
-    window.debounce(function () {
-      removePosts();
-      window.updateArrayDiscussed(window.posts.slice(0));
-
-      renderPosts(window.filterDiscussedPosts);
-      window.createBigPicture(postList.querySelectorAll('.picture'), window.filterDiscussedPosts);
-
-    })();
+    removePosts();
+    window.updateArrayDiscussed(window.posts.slice(0));
+    renderPosts(window.filterDiscussedPosts);
+    window.createBigPicture(postList.querySelectorAll('.picture'), window.filterDiscussedPosts);
   });
 
+  discussedFilter.addEventListener('click', discussedFilterHandler);
 
-  randomFilter.addEventListener('click', function () {
-
+  var randomFilterHandler = window.debounce(function () {
     defaultFilter.classList.remove('img-filters__button--active');
     discussedFilter.classList.remove('img-filters__button--active');
     randomFilter.classList.add('img-filters__button--active');
 
-    window.debounce(function () {
-      removePosts();
-      window.updateArrayRandom(window.posts.slice(0));
-      renderPosts(window.filterRandomPosts);
-      window.createBigPicture(document.querySelectorAll('.picture'), window.filterRandomPosts);
-    })();
+    removePosts();
+    window.updateArrayRandom(window.posts.slice(0));
+    renderPosts(window.filterRandomPosts);
+    window.createBigPicture(document.querySelectorAll('.picture'), window.filterRandomPosts);
   });
 
-  defaultFilter.addEventListener('click', function () {
+  randomFilter.addEventListener('click', randomFilterHandler);
 
+  var defaultFilterHandler = window.debounce(function () {
     discussedFilter.classList.remove('img-filters__button--active');
     randomFilter.classList.remove('img-filters__button--active');
     defaultFilter.classList.add('img-filters__button--active');
 
-    window.debounce(function () {
-      removePosts();
-      renderPosts(window.posts);
-      window.createBigPicture(postList.querySelectorAll('.picture'), window.posts);
-    })();
+    removePosts();
+    renderPosts(window.posts);
+    window.createBigPicture(postList.querySelectorAll('.picture'), window.posts);
   });
+
+  defaultFilter.addEventListener('click', defaultFilterHandler);
+
 })();
